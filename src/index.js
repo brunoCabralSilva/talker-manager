@@ -16,6 +16,7 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', talker);
 app.get('/talker/:id', talker);
+app.post('/talker', talker);
 app.get('/login', login);
 app.post('/login', login);
 
