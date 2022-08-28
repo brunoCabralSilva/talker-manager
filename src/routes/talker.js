@@ -15,6 +15,7 @@ const talkerAsync = async () => {
   router.get('/talker/:id', (req, res) => {
     const { id } = req.params;
     const idFounded = talkerConverted.find((item) => item.id === Number(id));
+    console.log(idFounded);
     if (idFounded === undefined) {
       res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     } else {
