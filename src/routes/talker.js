@@ -4,14 +4,13 @@ const fs = require('fs').promises;
 const router = express.Router();
 
 const talkerAsync = async () => {
-  const talkerJson = await fs.readFile('talker.json', 'utf-8');
+  const talkerJson = await fs.readFile('src/talker.json', 'utf-8');
   const talkerConverted = await JSON.parse(talkerJson);
   router.get('/talker', (req, res) => {
+    console.log(talkerConverted.length);
     if (talkerConverted.length > 0) {
-      res.status(200).json(JSON.parse(talkerConverted));
-    } else {
-      res.status(200).json([]);
-    }
+      res.status(200).json(talkerConverted);
+    } else res.status(200).json([]);
   });
   router.get('/talker/:id', (req, res) => {
     const { id } = req.params;
