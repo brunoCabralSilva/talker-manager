@@ -67,4 +67,13 @@ router.put('/:id', tokenV, nameV, ageV, talkV, rateV, watchV, async (req, res) =
   return res.status(200).json({ id, ...req.body });
 });
 
+router.delete('/:id', tokenV, async (req, res) => {
+  const talker = await fs.readFile(endereçoJson, 'utf-8');
+  const talkerJson = await JSON.parse(talker);
+  const id = parseInt(req.params.id, 10);
+  const removeItem = talkerJson.filter((tk) => tk.id !== id);
+  await fs.writeFile(endereçoJson, JSON.stringify(removeItem));
+  return res.status(204).json();
+});
+
 module.exports = router;
