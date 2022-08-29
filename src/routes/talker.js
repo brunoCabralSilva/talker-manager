@@ -18,6 +18,13 @@ router.get('/', async (req, res) => {
   } return res.status(200).json([]);
 });
 
+router.get('/search', tokenV, async (req, res) => {
+  const talker = await fs.readFile(endereçoJson, 'utf-8');
+  const talkerJson = await JSON.parse(talker);
+  const removeItem = talkerJson.filter((tk) => tk.name.includes(req.query.q));
+  return res.status(200).json(removeItem);
+});
+
 router.get('/:id', async (req, res) => {
   const talkerJson = await fs.readFile(endereçoJson, 'utf-8');
   const talkerConverted = await JSON.parse(talkerJson);
