@@ -5,7 +5,7 @@ const validaTypeOf = (rate) => {
 };
 
 const rateValidation = (req, res, next) => {
-  if (!req.body.talk.rate || req.body.talk.rate === '') {
+  if (!req.body.talk.rate && req.body.talk.rate !== 0) {
     return res.status(400).json({
       message: 'O campo "rate" é obrigatório',
     });

@@ -8,9 +8,10 @@ const rateV = require('../middlewares/rateValidation');
 const watchV = require('../middlewares/watchedAtValidation');
 
 const router = express.Router();
+const endereçoJson = 'src/talker.json';
 
 router.get('/', async (req, res) => {
-  const talkerJson = await fs.readFile('src/talker.json', 'utf-8');
+  const talkerJson = await fs.readFile(endereçoJson, 'utf-8');
   const talkerConverted = await JSON.parse(talkerJson);
   if (talkerConverted.length > 0) {
     return res.status(200).json(talkerConverted);
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const talkerJson = await fs.readFile('src/talker.json', 'utf-8');
+  const talkerJson = await fs.readFile(endereçoJson, 'utf-8');
   const talkerConverted = await JSON.parse(talkerJson);
   const { id } = req.params;
   const idFounded = talkerConverted.find((item) => item.id === Number(id));
@@ -29,7 +30,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', tokenV, nameV, ageV, talkV, rateV, watchV, async (req, res) => {
-  const talker = await fs.readFile('src/talker.json', 'utf-8');
+  const talker = await fs.readFile(endereçoJson, 'utf-8');
   const talkerJson = await JSON.parse(talker);
   const item = {
     id: talkerJson.length + 1,
@@ -42,9 +43,28 @@ router.post('/', tokenV, nameV, ageV, talkV, rateV, watchV, async (req, res) => 
   };
   
   talkerJson.push(item);
-  await fs.writeFile('src/talker.json', JSON.stringify(talkerJson));
+  await fs.writeFile(endereçoJson, JSON.stringify(talkerJson));
   
   return res.status(201).json(item);
+});
+
+router.put('/:id', tokenV, nameV, ageV, talkV, rateV, watchV, async (req, res) => {
+  const talker = await fs.readFile(endereçoJson, 'utf-8');
+  const talkerJson = await JSON.parse(talker);
+  const id = parseInt(req.params.id, 10);
+  const removeItem = talkerJson.filter((tk) => tk.id !== id);
+  let novoObjs = [];
+  if (!req.body.id) {
+    const objs = {
+      ...req.body,
+      id,
+    };
+    novoObjs = [objs, ...removeItem];
+  } else {
+    novoObjs = [req.body, ...removeItem];
+  }
+  await fs.writeFile(endereçoJson, JSON.stringify(novoObjs));
+  return res.status(200).json({ id, ...req.body });
 });
 
 module.exports = router;
