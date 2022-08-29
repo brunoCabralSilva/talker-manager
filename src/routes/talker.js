@@ -23,7 +23,6 @@ const talkerIdEnd = async () => {
   router.get('/talker/:id', (req, res) => {
     const { id } = req.params;
     const idFounded = talkerConverted.find((item) => item.id === Number(id));
-    console.log(idFounded);
     if (idFounded === undefined) {
       res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     } else {
@@ -33,7 +32,7 @@ const talkerIdEnd = async () => {
 };
 
 router.post('/talker', nameV, ageV, talkV, (req, res) => {
-  res.status(20).json({
+  res.status(200).json({
     id: req.body.id,
     name: req.body.name,
     age: req.body.age,
