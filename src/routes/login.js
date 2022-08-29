@@ -5,9 +5,9 @@ const passwordV = require('../middlewares/PasswordValidation');
 
 const router = express.Router();
 
-router.post('/login', emailV, passwordV, (req, res) => {
+router.post('/', emailV, passwordV, (req, res) => {
   const token = generateToken();
-  res.status(200).json({
+  return res.status(200).json({
     token,
   });
 });
