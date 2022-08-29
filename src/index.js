@@ -14,11 +14,8 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', talker);
-app.get('/talker/:id', talker);
-app.post('/talker', talker);
-app.get('/login', login);
-app.post('/login', login);
+app.use('/talker', talker);
+app.use(login);
 
 app.listen(PORT, () => {
   console.log('Online');
